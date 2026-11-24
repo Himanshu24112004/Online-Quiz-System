@@ -1,0 +1,3 @@
+Which data structure follows FIFO order?|Stack|Queue|Tree|Graph|B
+Which data structure follows LIFO order?|Stack|Queue|Array|Heap|A
+Which keyword is used to inherit a class in Java?|implements|super|extends|this|C
