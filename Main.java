@@ -44,21 +44,14 @@ public class Main {
     static Deque<Attempt> answeredStack = new ArrayDeque<>();   // Stack (push/pop at head)
     static List<ScoreEntry> scores = new ArrayList<>();
 
-    static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+    static Scanner in = new Scanner(System.in);
 
     // ---------- Input helper ----------
     static String readLine() throws EOFException {
-        try {
-            String line = in.readLine();
-            if (line == null) {
-                throw new EOFException();
-            }
-            return line.trim();
-        } catch (EOFException e) {
-            throw e;
-        } catch (IOException e) {
+        if (!in.hasNextLine()) {
             throw new EOFException();
         }
+        return in.nextLine().trim();
     }
 
     // ---------- File handling ----------
@@ -70,11 +63,10 @@ public class Main {
             System.out.println("Warning: " + QUIZ_FILE + " not found. No questions loaded.");
             return;
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-            String line;
+        try (Scanner fileScanner = new Scanner(f)) {
             int number = 0;
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine().trim();
                 if (line.isEmpty() || line.startsWith("#")) {
                     continue;
                 }
@@ -92,7 +84,7 @@ public class Main {
                 q.answer = Character.toUpperCase(p[5].trim().charAt(0));
                 questionBank.add(q);
             }
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("Error reading " + QUIZ_FILE + ": " + e.getMessage());
         }
     }
@@ -104,10 +96,9 @@ public class Main {
         if (!f.exists()) {
             return;
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
+        try (Scanner fileScanner = new Scanner(f)) {
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine().trim();
                 if (line.isEmpty()) {
                     continue;
                 }
@@ -123,7 +114,7 @@ public class Main {
                     // skip bad line
                 }
             }
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("Error reading " + SCORE_FILE + ": " + e.getMessage());
         }
     }
@@ -284,6 +275,7 @@ public class Main {
         }
 
         saveScores();      // save on exit
+        in.close();
         System.out.println("Scores saved. Goodbye!");
     }
 }
